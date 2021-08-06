@@ -1,12 +1,17 @@
 import os
 import json
 from pathlib import Path
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ImproperlyConfigured
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 from core.boxoffice import BoxOffice
 from core.location import Location
 from core.theater.lottecinema import LotteCinema
+from drf_yasg import openapi
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +43,13 @@ LOCATION_API_KEY = get_location_api("LOCATION_API_KEY")
 
 
 @csrf_exempt
+@api_view(['GET', 'POST'])
 def test(request):
+    """
+    TEST POST
+
+    ---
+    """
     if request.method == 'POST':
         response_data = {}
         response_data['result'] = 'POST test'
@@ -55,9 +66,12 @@ def test(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def movieRank(request):
     '''
     To get movie rank
+
+    ---
     :param request:
     :return:
     {
@@ -80,6 +94,7 @@ def movieRank(request):
         },
         ...
     }
+
     '''
     response_data = {}
     response_data['api'] = 'POST Movie Rank'
@@ -101,9 +116,12 @@ def movieRank(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def location(request):
     '''
     To get my location
+
+    ---
     :param request:
     :return:
     {
@@ -131,9 +149,12 @@ def location(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def filter_nearest_lottecinema(request):
     '''
     TO get filtered nearest 3 lottecinema
+
+    ---
     :param request:
     :return:
     {
@@ -183,9 +204,12 @@ def filter_nearest_lottecinema(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def filtered_lottecinema_movie_list(request):
     '''
     To get movie list by filtered lottecinema
+
+    ---
     :param request:
     {
         "TheaterID": "1|17|1002"
