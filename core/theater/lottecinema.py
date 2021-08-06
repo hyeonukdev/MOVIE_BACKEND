@@ -104,20 +104,3 @@ class LotteCinema(object):
                 }
                 schedules.append(schedule)
             return movie_id_to_info
-
-cinema = LotteCinema()
-
-# print(cinema.filter_nearest_theater(cinema.get_theater_list(), 37.5, 126.844))
-'''
-[{'TheaterName': '광명(광명사거리) 롯데시네마', 'TheaterID': '1|2|3027', 'Longitude': '126.8556578', 'Latitude': '37.4794548'}, 
-{'TheaterName': '신도림 롯데시네마', 'TheaterID': '1|14|1015', 'Longitude'titude': '37.5086097'}, 
-{'TheaterName': '가산디지털 롯데시네마', 'TheaterID': '1|1|1013', 'Longitude': '126.8890717', 'Latitude': '37.4775952'}]
-'''
-# print('===')
-print(cinema.get_movie_list('1|0003|4005'))
-'''
-{'17616': {'Name': '모가디슈', 'Schedules': [{'StartTime': '19:40', 'RemainingSeat': 120}]}, 
-'17652': {'Name': '더 수어사이드 스쿼드', 'Schedules': [{'StartTime': '19:30', 'RemainingSeat': 75}]}, 
-'17657피닉스', 'Schedules': [{'StartTime': '20:00', 'RemainingSeat': 22}]}}
-
-'''
