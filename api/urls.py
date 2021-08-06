@@ -5,4 +5,7 @@ import api.views as view
 urlpatterns = [
     path('test/', view.test, name='test'),
     path('movie-rank/', view.movieRank, name='movieRank'),
+    path('location/', view.location, name='location'),
+    path('near-lottecinema/', view.filter_nearest_lottecinema, name='filter_nearest_lottecinema'),
+    path('selected-lottecinema-movie-list/', view.filtered_lottecinema_movie_list, name='filtered_lottecinema_movie_list'),
 ]

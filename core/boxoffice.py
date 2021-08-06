@@ -48,6 +48,3 @@ class BoxOffice(object):
         ]
 
 
-api_key = '347b0768797ab37cab28a820ff46db0e'
-box = BoxOffice(api_key)
-
