@@ -93,11 +93,11 @@ def findTheater(request):
 
     # LOTTE
     lotte_theater_info = []
-    lotte_movie_schedules = []
     Lcinema = LotteCinema()
     lotte_theater_lists = Lcinema.filter_nearest_theater(Lcinema.get_theater_list(), lat, lng)
 
     for lotte_theater in lotte_theater_lists:
+        lotte_movie_schedules = []
         theaterID = lotte_theater.get('TheaterID')
         theaterName = lotte_theater.get('TheaterName')
         theaterLng = lotte_theater.get('Longitude')
@@ -109,13 +109,12 @@ def findTheater(request):
             # print(key, value)
             if value.get('Name') == movie_name:
                 # print(key, value)
-                schedules = value.get('Schedules')[0]
+                schedules = value.get('Schedules')
+                # print(schedules)
                 lotte_movie_schedules.append(schedules)
-            else:
-                continue
 
-        if not lotte_movie_schedules:
-            lotte_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
+            if not lotte_movie_schedules:
+                lotte_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
 
         lotte_theater_info.append({
             'TheaterID': theaterID,
@@ -124,42 +123,63 @@ def findTheater(request):
             'Latitude': theaterLat,
             'MoiveLists': lotte_movie_schedules
         })
+        # print("---")
+    # print(lotte_theater_info)
 
-        # CGV
-        cgv_theater_info = []
+    # CGV
+    cgv_theater_info = []
+    Ccinema = CGV()
+    cgv_theater_lists = Ccinema.filter_nearest_theater(Ccinema.get_theater_list(), lat, lng)
+
+    for cgv_theater in cgv_theater_lists:
+        # print(cgv_theater)
         cgv_movie_schedules = []
-        Ccinema = CGV()
-        cgv_theater_lists = Ccinema.filter_nearest_theater(Ccinema.get_theater_list(), lat, lng)
+        theaterID = cgv_theater.get('TheaterCode')
+        theaterName = cgv_theater.get('TheaterName')
+        theaterLng = cgv_theater.get('Longitude')
+        theaterLat = cgv_theater.get('Latitude')
+        areacode = cgv_theater.get('RegionCode')
+        movie_lists = Ccinema.get_movie_list(areacode, theaterID, date)
+        # print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
 
-        for cgv_theater in cgv_theater_lists:
-            # print(cgv_theater)
-            theaterID = cgv_theater.get('TheaterCode')
-            theaterName = cgv_theater.get('TheaterName')
-            theaterLng = cgv_theater.get('Longitude')
-            theaterLat = cgv_theater.get('Latitude')
-            areacode = cgv_theater.get('RegionCode')
-            movie_lists = Ccinema.get_movie_list(areacode, theaterID, date)
-            # print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
-
-            for key, value in movie_lists.items():
+        for key, value in movie_lists.items():
+            # print(key, value)
+            if value.get('Name') == movie_name:
                 # print(key, value)
-                if value.get('Name') == movie_name:
-                    # print(key, value)
-                    schedules = value.get('Schedules')[0]
-                    cgv_movie_schedules.append(schedules)
-                else:
-                    continue
+                schedules = value.get('Schedules')
+                # print('---')
+                schedules = schedules[0]
+                # print(schedules)
+                # print(type(schedules))
+                for schedule in schedules:
+                    handle_scedule_data = []
+                    # print(f"schedule: {schedule}")
+                    startTime = schedule[0]
+                    remainingSeat = schedule[1][4:-1]
+                    handle_scedule_data.append({
+                        'StartTime': startTime,
+                        'RemainingSeat': remainingSeat
+                    })
+                    # print(handle_scedule_data)
+                    cgv_movie_schedules.append(handle_scedule_data)
+            else:
+                continue
 
             if not cgv_movie_schedules:
                 cgv_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
 
-            cgv_theater_info.append({
-                'TheaterID': theaterID,
-                'TheaterName': theaterName,
-                'Longitude': theaterLng,
-                'Latitude': theaterLat,
-                'MoiveLists': cgv_movie_schedules
-            })
+        cgv_theater_info.append({
+            'TheaterID': theaterID,
+            'TheaterName': theaterName,
+            'Longitude': theaterLng,
+            'Latitude': theaterLat,
+            'MoiveLists': cgv_movie_schedules
+        })
+        # print("---")
+
+    # print(lotte_theater_info)
+    # print("---")
+    # print(cgv_theater_info)
 
     datas = {
         'now': now,

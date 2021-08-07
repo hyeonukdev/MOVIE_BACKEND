@@ -9,6 +9,36 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 
 
+def get_timetable(movie):
+    # dict = {}
+    # timetables = movie.select('div > div.type-hall > div.info-timetable > ul > li')
+    # for timetable in timetables:
+    #     print(timetable)
+    #     if timetable.select_one('a > em'):
+    #         time = timetable.select_one('a > em')
+    #         time = time.get_text()
+    #     else:
+    #         pass
+    #     seat = timetable.select_one('a > span').get_text()
+    #     seat = seat[4:-1]
+    #     dict['StartTime'] = time
+    #     dict['RemainingSeat'] = seat
+    #
+    # return dict
+    tuples = []
+    timetables = movie.select('div > div.type-hall > div.info-timetable > ul > li')
+    for timetable in timetables:
+        # print(timetable)
+        time = timetable.select_one('a > em')
+        if time is None:
+            continue
+        else:
+            time = time.get_text()
+        seat = timetable.select_one('a > span').get_text()
+        tuple = (time, seat)
+        tuples.append(tuple)
+    return tuples
+
 class CGV():
     base_url = 'http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx'
 
@@ -87,30 +117,7 @@ class CGV():
 
         return [theater for distance, theater in sorted(distance_to_theater, key=lambda x: x[0])[:n]]
 
-    def get_timetable(self, movie):
-        dict = {}
-        timetables = movie.select('div > div.type-hall > div.info-timetable > ul > li')
-        for timetable in timetables:
-            # print(timetable)
-            time = timetable.select_one('a > em')
-            if time is None:
-                continue
-            else:
-                time = time.get_text()
-            seat = timetable.select_one('a > span').get_text()
-            seat = seat[4:-1]
-            dict['StartTime'] = time
-            dict['RemainingSeat'] = seat
 
-        return dict
-
-    # TODO : check crawl movie lists
-    '''
-    크롤링할 때 마지막 값만 가져오는것 같음 확인해볼 것!
-    get_timetable 에서 select_one 때문에 마지막 값을 가져오는 것 같음
-    따러서 해당 부분 수정해서 여러 스케쥴을 가져올 것
-    가져올 때 현재 형식을 맞추기!
-    '''
     def get_movie_list(self, areacode, theatercode, date):
         '''
         To get moive list by theater_id
@@ -124,11 +131,10 @@ class CGV():
         else:
             target_dt = datetime.now()
             date = target_dt.strftime('%Y%m%d')
-        data = {"areacode": areacode,
-                "theatercode": theatercode,
-                 "date": date}
+        url = url + str("?") + str("areacode") + "=" + areacode + str("&theatercode") + "=" + theatercode + str("&date") + "=" + date
+        # print(url)
         headers = {'content-type': 'application/json'}
-        response = requests.post(url, data=json.dumps(data), headers=headers)
+        response = requests.post(url, headers=headers)
 
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
@@ -139,16 +145,16 @@ class CGV():
         count = 0
         for movie in movies:
             title = movie.select_one('div > div.info-movie > a > strong').get_text().strip()
-            timetable = self.get_timetable(movie)
+            timetable = get_timetable(movie)
             # print(title, timetable, '\n')
             movie_id_to_info[count]= {'Name': title, 'Schedules': [timetable]}
             count += 1
         # print(movie_id_to_info)
         return movie_id_to_info
 
-cgv = CGV()
-areacode = '01'
-theatercode = '0112'
-date = '2021-08-08'
-# print(cgv.get_movie_list(theatercode, date))
-print(cgv.get_movie_list(areacode, theatercode, date))
+# cgv = CGV()
+# areacode = '01'
+# theatercode = '0010'
+# date = '2021-08-08'
+# # print(cgv.get_movie_list(theatercode, date))
+# print(cgv.get_movie_list(areacode, theatercode, date))

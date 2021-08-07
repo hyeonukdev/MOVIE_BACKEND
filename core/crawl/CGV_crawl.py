@@ -21,8 +21,8 @@ def get_timetable(movie):
 
 url = "http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx"
 data = {"areacode": "01",
-       "theatercode": "0001",
-       "date": "20210807"}
+       "theatercode": "0010",
+       "date": "20210808"}
 headers = {'content-type': 'application/json'}
 response = requests.post(url, data=json.dumps(data), headers=headers)
 
@@ -34,6 +34,7 @@ movies = soup.select('body > div > div.sect-showtimes > ul > li')
 for movie in movies:
     title = movie.select_one('div > div.info-movie > a > strong').get_text().strip()
     timetable = get_timetable(movie)
+    # print("--")
     print(title, timetable, '\n')
 
 
