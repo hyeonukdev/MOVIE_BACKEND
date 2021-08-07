@@ -1,9 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <h3>영화제목 : {{ datas.movie_name }}</h3>
+    <br/>
+    <h3>영화관검색 위치 : {{ datas.movie_place }}</h3>
+    <br/>
 
-    {{ lotte_theater_lists }}
+    <h1>롯데시네마 정보</h1>
+    {% for data in datas.lotte_theater_info%}
+        영화관 이름 : {{ data.TheaterName }}
+        <br/>
+        영화관 코드 : {{ data.TheaterID }}
+        <br/>
+        영화관 위치(lng) : {{ data.Longitude }}
+        <br/>
+        영화관 위치(lat) : {{ data.Latitude }}
+        <br/>
+        영화 상영시간 :
+        <br>
 
+        {% for MoiveList in data.MoiveLists %}
+
+            - 시작시간 : {{ MoiveList.StartTime }}
+            <br/>
+            - 잔여좌석 : {{ MoiveList.RemainingSeat }}
+            <br/>
+        {% endfor %}
+        <br/>
+
+        <hr>
+    {% endfor %}
     <br/>
 {% endblock content %}
 

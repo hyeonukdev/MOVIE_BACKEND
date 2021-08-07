@@ -35,7 +35,7 @@ dic = {"MethodName": "GetPlaySequence",
        "channelType": "MA",
        "osType": "",
        "osVersion": "",
-       "playDate": "2021-08-05",
+       "playDate": "2021-08-08",
        "cinemaID": "1|17|1002",
        "representationMovieCode": ""}
 parameters = {"paramList": str(dic)}

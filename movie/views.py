@@ -75,23 +75,53 @@ def nearCGV(request):
 @csrf_exempt
 def findTheater(request):
     # LOTTE
-    cinema = LotteCinema()
+    lotte_theater_info = []
+    lotte_movie_schedules = []
+    Lcinema = LotteCinema()
     location = Location(LOCATION_API_KEY)
-    movie_info = request.body
-    movie_info = movie_info.decode('utf-8')
-    movie_code = movie_info.split('&')[0]
-    movie_code = movie_code.split('=')[1]
-    movie_place = movie_info.split('&')[1]
-    if movie_place.split('=')[1]:
-        movie_place = movie_place.split('=')[1]
+
+    movie_name = request.POST.get('selected_movie')
+    date = request.POST.get('date')
+    if request.POST.get('moviePlace'):
+        movie_place = request.POST.get('moviePlace')
         findLoc = location.get_place_location(movie_place)
         lat = findLoc['lat']
         lng = findLoc['lng']
     else:
+        movie_place = 'here'
         myloc = location.get_location()
         lat = myloc['lat']
         lng = myloc['lng']
 
-    lotte_theater_lists = cinema.filter_nearest_theater(cinema.get_theater_list(), lat, lng)
+    lotte_theater_lists = Lcinema.filter_nearest_theater(Lcinema.get_theater_list(), lat, lng)
 
-    return render(request, 'movie/findTheater.html', {'lotte_theater_lists': lotte_theater_lists})
+    for lotte_theater in lotte_theater_lists:
+        theaterID = lotte_theater.get('TheaterID')
+        theaterName = lotte_theater.get('TheaterName')
+        theaterLng = lotte_theater.get('Longitude')
+        theaterLat = lotte_theater.get('Latitude')
+        movie_lists = Lcinema.get_movie_list(theaterID, date)
+        # print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
+
+        for key, value in movie_lists.items():
+            if value.get('Name') == movie_name:
+                schedules = value.get('Schedules')[0]
+                lotte_movie_schedules.append(schedules)
+            else:
+                continue
+
+        lotte_theater_info.append({
+            'TheaterID': theaterID,
+            'TheaterName': theaterName,
+            'Longitude': theaterLng,
+            'Latitude': theaterLat,
+            'MoiveLists': lotte_movie_schedules
+        })
+
+    datas = {
+        'movie_name': movie_name,
+        'movie_place': movie_place,
+        'lotte_theater_info': lotte_theater_info
+    }
+
+    return render(request, 'movie/findTheater.html', {'datas': datas})
