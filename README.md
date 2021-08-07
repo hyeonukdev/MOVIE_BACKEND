@@ -23,10 +23,13 @@ MOVIE_BACKEND/
 │       │   __init__.py
 │       │   CGV_crawl.py
 │       │   LOTTE_crawl.py
+│       │   make_cgv_theater_list.py
 │       │   MEGA_crawl.py
 │   │───theater/
+│   │   │───data/
 │       │   __init__.py
 │       │   lottecinema.py
+│       │   cgv.py
 │       │   __init__.py
 │       │   boxoffice.py
 │       │   location.py

@@ -142,4 +142,8 @@ cython_debug/
 
 secrets.json
 
-core/theater/data
+core/.DS_Store
+core/theater/.DS_Store
+core/theater/data/
+
+core/theater/data.zip
