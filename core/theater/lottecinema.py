@@ -105,5 +105,5 @@ class LotteCinema(object):
                 schedules.append(schedule)
             return movie_id_to_info
 
-c = LotteCinema()
-print(c.get_movie_list('1|17|1002'))
+# c = LotteCinema()
+# print(c.get_movie_list('1|17|1002'))
