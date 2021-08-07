@@ -122,10 +122,46 @@ def findTheater(request):
             'MoiveLists': lotte_movie_schedules
         })
 
+        # CGV
+        cgv_theater_info = []
+        cgv_movie_schedules = []
+        Ccinema = CGV()
+        cgv_theater_lists = Ccinema.filter_nearest_theater(Ccinema.get_theater_list(), lat, lng)
+
+        for cgv_theater in cgv_theater_lists:
+            print(cgv_theater)
+            theaterID = cgv_theater.get('TheaterCode')
+            theaterName = cgv_theater.get('TheaterName')
+            theaterLng = cgv_theater.get('Longitude')
+            theaterLat = cgv_theater.get('Latitude')
+            movie_lists = Ccinema.get_movie_list(theaterID, date)
+            print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
+
+            for key, value in movie_lists.items():
+                # print(key, value)
+                if value.get('Name') == movie_name:
+                    # print(key, value)
+                    schedules = value.get('Schedules')[0]
+                    cgv_movie_schedules.append(schedules)
+                else:
+                    continue
+
+            if not cgv_movie_schedules:
+                cgv_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
+
+            cgv_theater_info.append({
+                'TheaterID': theaterID,
+                'TheaterName': theaterName,
+                'Longitude': theaterLng,
+                'Latitude': theaterLat,
+                'MoiveLists': cgv_movie_schedules
+            })
+
     datas = {
         'movie_name': movie_name,
         'movie_place': movie_place,
-        'lotte_theater_info': lotte_theater_info
+        'lotte_theater_info': lotte_theater_info,
+        'cgv_theater_info': cgv_theater_info
     }
 
     return render(request, 'movie/findTheater.html', {'datas': datas})
