@@ -52,6 +52,20 @@ def rank(request):
         rank = movie_list['rank']
         response_data[rank] = movie_list
 
-    print(response_data)
-
     return render(request, 'movie/rank.html', {'datas': response_data})
+
+
+def nearCGV(request):
+    response_data = {}
+
+    cinema = LotteCinema()
+    location = Location(LOCATION_API_KEY)
+    myloc = location.get_location()
+    lat = myloc['lat']
+    lng = myloc['lng']
+
+    theater_lists = cinema.filter_nearest_theater(cinema.get_theater_list(), lat, lng)
+
+    # response_data['near_theater_lists'] = theater_lists
+
+    return render(request, 'movie/nearCGV.html', {'datas': theater_lists})
