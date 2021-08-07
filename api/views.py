@@ -278,7 +278,8 @@ def filtered_lottecinema_movie_list(request):
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-#---
+# ---------------------------
+# CGV
 
 @csrf_exempt
 @api_view(['POST'])
@@ -290,7 +291,32 @@ def filter_nearest_cgv(request):
     :param request:
     :return:
     {
-
+        "api": "POST cgv fileter by location",
+        "response": "200",
+        "near_theater_lists": [
+            {
+                "TheaterCode": "0059",
+                "TheaterName": "CGV영등포",
+                "Longitude": 126.9031758,
+                "Latitude": 37.5171639,
+                "RegionCode": "01"
+            },
+            {
+                "TheaterCode": "0112",
+                "TheaterName": "CGV여의도",
+                "Longitude": 126.9254109,
+                "Latitude": 37.5254692,
+                "RegionCode": "01"
+            },
+            {
+                "TheaterCode": "0010",
+                "TheaterName": "CGV구로",
+                "Longitude": 126.8825372,
+                "Latitude": 37.5013174,
+                "RegionCode": "01"
+            }
+        ]
+    }
     '''
     response_data = {}
     response_data['api'] = 'POST cgv fileter by location'
@@ -322,11 +348,43 @@ def filtered_cgv_movie_list(request):
     ---
     :param request:
     {
-        'areacode' : '01'
-        'theatercode' : '0001'
+        "areaCode": "01",
+        "theatercode": "0001"
     }
     :return:
-
+    {
+        "api": "POST filetered cgv movie list",
+        "response": "200",
+        "movie_lists": {
+            "0": {
+                "Name": "모가디슈",
+                "Schedules": [
+                    {
+                        "StartTime": "19:30",
+                        "RemainingSeat": "27"
+                    }
+                ]
+            },
+            "1": {
+                "Name": "블랙핑크 더 무비",
+                "Schedules": [
+                    {
+                        "StartTime": "20:00",
+                        "RemainingSeat": "110"
+                    }
+                ]
+            },
+            "2": {
+                "Name": "더 수어사이드 스쿼드",
+                "Schedules": [
+                    {
+                        "StartTime": "19:30",
+                        "RemainingSeat": "47"
+                    }
+                ]
+            }
+        }
+    }
     '''
     response_data = {}
     response_data['api'] = 'POST filetered cgv movie list'
