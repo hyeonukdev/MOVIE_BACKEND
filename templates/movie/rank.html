@@ -2,12 +2,7 @@
 
 {% block content %}
 
-    {% for key, value in datas.items %}
-        <h5>순위 : {{ value.rank }}</h5>
-        <h5>영화제목 : {{ value.name }}</h5>
-        <h5>영화코드 : {{ value.code }}</h5>
-    {% endfor %}
-
+    <h1>영화검색</h1>
 
         <form action="{% url 'findTheater' %}" method="post">
              영화선택
@@ -27,6 +22,12 @@
             <input type="submit" value="OK">
         </form>
 
+    {% for key, value in datas.items %}
+        <hr>
+        <h5>순위 : {{ value.rank }}</h5>
+        <h5>영화제목 : {{ value.name }}</h5>
+        <h5>영화코드 : {{ value.code }}</h5>
+    {% endfor %}
 
     <br/>
 {% endblock content %}

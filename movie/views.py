@@ -74,12 +74,7 @@ def nearCGV(request):
 
 @csrf_exempt
 def findTheater(request):
-    # LOTTE
-    lotte_theater_info = []
-    lotte_movie_schedules = []
-    Lcinema = LotteCinema()
     location = Location(LOCATION_API_KEY)
-
     movie_name = request.POST.get('selected_movie')
     date = request.POST.get('date')
     if request.POST.get('moviePlace'):
@@ -93,6 +88,10 @@ def findTheater(request):
         lat = myloc['lat']
         lng = myloc['lng']
 
+    # LOTTE
+    lotte_theater_info = []
+    lotte_movie_schedules = []
+    Lcinema = LotteCinema()
     lotte_theater_lists = Lcinema.filter_nearest_theater(Lcinema.get_theater_list(), lat, lng)
 
     for lotte_theater in lotte_theater_lists:
@@ -104,11 +103,16 @@ def findTheater(request):
         # print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
 
         for key, value in movie_lists.items():
+            # print(key, value)
             if value.get('Name') == movie_name:
+                # print(key, value)
                 schedules = value.get('Schedules')[0]
                 lotte_movie_schedules.append(schedules)
             else:
                 continue
+
+        if not lotte_movie_schedules:
+            lotte_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
 
         lotte_theater_info.append({
             'TheaterID': theaterID,
