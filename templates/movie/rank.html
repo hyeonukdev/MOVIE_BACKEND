@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ data }}</h1>
+
+    {% for key, value in datas.items %}
+        <h3>순위 : {{ value.rank }}</h3>
+        <h3>영화제목 : {{ value.name }}</h3>
+        <h3>영화코드 : {{ value.code }}</h3>
+        <br>
+    {% endfor %}
+
+    <br/>
 {% endblock content %}
 
 

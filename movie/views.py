@@ -43,15 +43,15 @@ def index(request):
 
 def rank(request):
     response_data = {}
-    response_data['api'] = 'POST Movie Rank'
 
     box = BoxOffice(BOXOFFICE_API_KEY)
     movies = box.get_movies()
     movie_lists = box.simplify(movies)
-    response_data['response'] = '200'
 
     for movie_list in movie_lists:
         rank = movie_list['rank']
         response_data[rank] = movie_list
 
-    return render(request, 'movie/rank.html', {'data': response_data})
+    print(response_data)
+
+    return render(request, 'movie/rank.html', {'datas': response_data})
