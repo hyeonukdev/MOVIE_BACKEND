@@ -11,6 +11,7 @@ from drf_yasg.utils import swagger_auto_schema
 from core.boxoffice import BoxOffice
 from core.location import Location
 from core.theater.lottecinema import LotteCinema
+from core.theater.cgv import CGV
 from drf_yasg import openapi
 
 
@@ -268,6 +269,74 @@ def filtered_lottecinema_movie_list(request):
         TheaterID = data.get('TheaterID')
         cinema = LotteCinema()
         movie_list = cinema.get_movie_list(TheaterID)
+
+        response_data['response'] = '200'
+        response_data['movie_lists'] = movie_list
+    else:
+        response_data['errorr_msg'] = 'you should request POST'
+        response_data['response'] = '400'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+#---
+
+@csrf_exempt
+@api_view(['POST'])
+def filter_nearest_cgv(request):
+    '''
+    TO get filtered nearest 3 cgv
+
+    ---
+    :param request:
+    :return:
+    {
+
+    '''
+    response_data = {}
+    response_data['api'] = 'POST cgv fileter by location'
+
+    if request.method == 'POST':
+        cinema = CGV()
+        location = Location(LOCATION_API_KEY)
+        myloc = location.get_location()
+        lat = myloc['lat']
+        lng = myloc['lng']
+
+        theater_lists = cinema.filter_nearest_theater(cinema.get_theater_list(), lat, lng)
+
+        response_data['response'] = '200'
+        response_data['near_theater_lists'] = theater_lists
+    else:
+        response_data['errorr_msg'] = 'you should request POST'
+        response_data['response'] = '400'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@csrf_exempt
+@api_view(['POST'])
+def filtered_cgv_movie_list(request):
+    '''
+    To get movie list by filtered cgv
+
+    ---
+    :param request:
+    {
+        'areacode' : '01'
+        'theatercode' : '0001'
+    }
+    :return:
+
+    '''
+    response_data = {}
+    response_data['api'] = 'POST filetered cgv movie list'
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        areaCode = data.get('areaCode')
+        theatercode = data.get('theatercode')
+        cinema = CGV()
+        movie_list = cinema.get_movie_list(areaCode, theatercode)
 
         response_data['response'] = '200'
         response_data['movie_lists'] = movie_list

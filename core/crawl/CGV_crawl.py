@@ -21,8 +21,8 @@ def get_timetable(movie):
 
 url = "http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx"
 data = {"areacode": "01",
-       "theatercode": "0059",
-       "date": "20200315"}
+       "theatercode": "0001",
+       "date": "20210807"}
 headers = {'content-type': 'application/json'}
 response = requests.post(url, data=json.dumps(data), headers=headers)
 
