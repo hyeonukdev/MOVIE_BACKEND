@@ -3,6 +3,7 @@
 {% block content %}
     <h3>영화제목 : {{ datas.movie_name }}</h3>
     <h3>영화관검색 위치 : {{ datas.movie_place }}</h3>
+    <h4>현재시간 : {{ datas.now }}</h4>
 
     <h1>롯데시네마 정보</h1>
     {% for data in datas.lotte_theater_info%}

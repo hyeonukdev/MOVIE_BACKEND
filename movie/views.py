@@ -1,6 +1,7 @@
 import os
 import json
 from pathlib import Path
+from datetime import datetime
 from django.shortcuts import render
 from django.core.exceptions import ImproperlyConfigured
 from django.views.decorators.csrf import csrf_exempt
@@ -74,6 +75,8 @@ def nearCGV(request):
 
 @csrf_exempt
 def findTheater(request):
+    now = datetime.now()
+    now = now.strftime('%Y-%m-%d %H:%m')
     location = Location(LOCATION_API_KEY)
     movie_name = request.POST.get('selected_movie')
     date = request.POST.get('date')
@@ -129,13 +132,14 @@ def findTheater(request):
         cgv_theater_lists = Ccinema.filter_nearest_theater(Ccinema.get_theater_list(), lat, lng)
 
         for cgv_theater in cgv_theater_lists:
-            print(cgv_theater)
+            # print(cgv_theater)
             theaterID = cgv_theater.get('TheaterCode')
             theaterName = cgv_theater.get('TheaterName')
             theaterLng = cgv_theater.get('Longitude')
             theaterLat = cgv_theater.get('Latitude')
-            movie_lists = Ccinema.get_movie_list(theaterID, date)
-            print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
+            areacode = cgv_theater.get('RegionCode')
+            movie_lists = Ccinema.get_movie_list(areacode, theaterID, date)
+            # print(f"theaterID: {theaterID}, theaterName: {theaterName}, theaterLng: {theaterLng}, movie_lists: {movie_lists}")
 
             for key, value in movie_lists.items():
                 # print(key, value)
@@ -158,6 +162,7 @@ def findTheater(request):
             })
 
     datas = {
+        'now': now,
         'movie_name': movie_name,
         'movie_place': movie_place,
         'lotte_theater_info': lotte_theater_info,

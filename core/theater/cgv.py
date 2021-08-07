@@ -104,17 +104,25 @@ class CGV():
 
         return dict
 
-    def get_movie_list(self, areacode, theatercode):
+    # TODO : check crawl movie lists
+    '''
+    크롤링할 때 마지막 값만 가져오는것 같음 확인해볼 것!
+    '''
+    def get_movie_list(self, areacode, theatercode, date):
         '''
         To get moive list by theater_id
         :param theater_id:
         :return:
         '''
         url = self.base_url
-        target_dt = datetime.now()
-        date = target_dt.strftime('%Y%m%d')
+        if date:
+            date = datetime.strptime(date, '%Y-%m-%d')
+            date = date.strftime('%Y%m%d')
+        else:
+            target_dt = datetime.now()
+            date = target_dt.strftime('%Y%m%d')
         data = {"areacode": areacode,
-                 "theatercode": theatercode,
+                "theatercode": theatercode,
                  "date": date}
         headers = {'content-type': 'application/json'}
         response = requests.post(url, data=json.dumps(data), headers=headers)
@@ -135,7 +143,9 @@ class CGV():
         # print(movie_id_to_info)
         return movie_id_to_info
 
-# cgv = CGV()
-# areacode = '01'
-# theatercode = '0001'
-# print(cgv.get_movie_list(areacode, theatercode))
+cgv = CGV()
+areacode = '01'
+theatercode = '0112'
+date = '2021-08-08'
+# print(cgv.get_movie_list(theatercode, date))
+print(cgv.get_movie_list(areacode, theatercode, date))
