@@ -6,4 +6,5 @@ urlpatterns = [
     path('index/', view.index, name='index'),
     path('rank/', view.rank, name='rank'),
     path('near-cgv/', view.nearCGV, name='nearCGV'),
+    path('find-theater/', view.findTheater, name='findTheater'),
 ]
