@@ -9,6 +9,7 @@ from drf_yasg import openapi
 
 schema_url_patterns = [
     path('api/', include('api.urls')),
+    path('movie/', include('movie.urls')),
 ]
 
 schema_view = get_schema_view(
@@ -25,6 +26,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    path('movie/', include('movie.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += [
