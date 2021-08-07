@@ -107,6 +107,9 @@ class CGV():
     # TODO : check crawl movie lists
     '''
     크롤링할 때 마지막 값만 가져오는것 같음 확인해볼 것!
+    get_timetable 에서 select_one 때문에 마지막 값을 가져오는 것 같음
+    따러서 해당 부분 수정해서 여러 스케쥴을 가져올 것
+    가져올 때 현재 형식을 맞추기!
     '''
     def get_movie_list(self, areacode, theatercode, date):
         '''
