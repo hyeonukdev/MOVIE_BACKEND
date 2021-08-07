@@ -162,11 +162,12 @@ def findTheater(request):
                     })
                     # print(handle_scedule_data)
                     cgv_movie_schedules.append(handle_scedule_data)
-            else:
-                continue
+
 
             if not cgv_movie_schedules:
                 cgv_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
+
+            # print(f"cgv_movie_schedules: {cgv_movie_schedules}")
 
         cgv_theater_info.append({
             'TheaterID': theaterID,

@@ -48,10 +48,14 @@
         <br>
         {% for MoiveList in data.MoiveLists %}
             {% for movie in MoiveList %}
+                {% if movie.StartTime %}
                 - 시작시간 : {{ movie.StartTime }}
                 <br/>
                 - 잔여좌석 : {{ movie.RemainingSeat }}
                 <br/>
+                {% else %}
+                    영화시간 없음
+                {% endif %}
             {% endfor %}
         {% endfor %}
         <hr>
