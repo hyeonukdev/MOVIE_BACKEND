@@ -17,13 +17,23 @@
         <br/>
         영화 상영시간 :
         <br>
+
         {% for MoiveList in data.MoiveLists %}
-            {% for movie in MoiveList %}
-                - 시작시간 : {{ movie.StartTime }}
-                <br/>
-                - 잔여좌석 : {{ movie.RemainingSeat }}
-                <br/>
-            {% endfor %}
+{#            {{ MoiveList }}#}
+{#            {{ MoiveList.StartTime }}#}
+            {% if MoiveList.StartTime == "None"%}
+                    - 시작시간 : {{ MoiveList.StartTime }}
+                    <br/>
+                    - 잔여좌석 : {{ MoiveList.RemainingSeat }}
+                    <br/>
+            {% else %}
+                {% for movie in MoiveList %}
+                    - 시작시간 : {{ movie.StartTime }}
+                    <br/>
+                    - 잔여좌석 : {{ movie.RemainingSeat }}
+                    <br/>
+                {% endfor %}
+            {% endif %}
         {% endfor %}
         <hr>
     {% endfor %}
@@ -46,17 +56,23 @@
         <br/>
         영화 상영시간 :
         <br>
+
         {% for MoiveList in data.MoiveLists %}
-            {% for movie in MoiveList %}
-                {% if movie.StartTime %}
-                - 시작시간 : {{ movie.StartTime }}
-                <br/>
-                - 잔여좌석 : {{ movie.RemainingSeat }}
-                <br/>
-                {% else %}
-                    영화시간 없음
-                {% endif %}
-            {% endfor %}
+{#            {{ MoiveList }}#}
+{#            {{ MoiveList.StartTime }}#}
+            {% if MoiveList.StartTime == "None"%}
+                    - 시작시간 : {{ MoiveList.StartTime }}
+                    <br/>
+                    - 잔여좌석 : {{ MoiveList.RemainingSeat }}
+                    <br/>
+            {% else %}
+                {% for movie in MoiveList %}
+                    - 시작시간 : {{ movie.StartTime }}
+                    <br/>
+                    - 잔여좌석 : {{ movie.RemainingSeat }}
+                    <br/>
+                {% endfor %}
+            {% endif %}
         {% endfor %}
         <hr>
         <br/>

@@ -113,8 +113,11 @@ def findTheater(request):
                 # print(schedules)
                 lotte_movie_schedules.append(schedules)
 
-            if not lotte_movie_schedules:
-                lotte_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
+        if not lotte_movie_schedules:
+            lotte_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
+
+        # print(lotte_movie_schedules)
+        # print(type(lotte_movie_schedules))
 
         lotte_theater_info.append({
             'TheaterID': theaterID,
@@ -164,10 +167,11 @@ def findTheater(request):
                     cgv_movie_schedules.append(handle_scedule_data)
 
 
-            if not cgv_movie_schedules:
-                cgv_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
+        if not cgv_movie_schedules:
+            cgv_movie_schedules.append({'StartTime': 'None', 'RemainingSeat': 'None'})
 
-            # print(f"cgv_movie_schedules: {cgv_movie_schedules}")
+        # print(f"cgv_movie_schedules: {cgv_movie_schedules}")
+        # print(f"cgv_movie_schedules: {type(cgv_movie_schedules)}")
 
         cgv_theater_info.append({
             'TheaterID': theaterID,
