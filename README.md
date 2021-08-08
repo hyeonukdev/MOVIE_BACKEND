@@ -1,5 +1,9 @@
 # DJANGO MOVIE API BACKEND
 
+- This is for make movie ticketing site
+- There is 3 movie company datas
+
+
 ### Start
 - Use Windows
 ```
