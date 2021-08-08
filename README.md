@@ -5,6 +5,9 @@
 
 
 ### Start
+```
+$ git fetch && git checkout develop
+```
 - Use Windows
 ```
 $ sh run_winodws.sh
