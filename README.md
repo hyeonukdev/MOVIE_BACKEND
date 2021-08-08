@@ -1,5 +1,23 @@
 # DJANGO MOVIE API BACKEND
 
+### Start
+- Use Windows
+```
+$ sh run_winodws.sh
+```
+- Use Mac
+```
+$ sh run_mac.sh
+```
+
+### Page
+- Inddex
+    - http://127.0.0.1:8000/movie/index/
+- Rank
+    - http://127.0.0.1:8000/movie/rank/
+- findeTheater
+    - http://127.0.0.1:8000/movie/find-theater/
+    
 ### PROJECT STRUCTURE
 ```
 MOVIE_BACKEND/
@@ -34,7 +52,11 @@ MOVIE_BACKEND/
 │     │   __init__.py
 │     │   boxoffice.py
 │     │   location.py
-└───templates/
+│───templates/
+│     │   findTheater.html
+│     │   index.html
+│     │   nearCGV.html
+│     │   rank.html
 │   .gitignore
 │   db.sqlite3
 │   manage.py
